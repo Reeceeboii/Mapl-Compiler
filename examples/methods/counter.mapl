@@ -1,0 +1,10 @@
+// inputs: 1
+// output: x (x-1) ... 0
+
+proc main(int x) {
+  while ((0-1) < x) do {
+    output x; outchar 32;
+    x = x - 1;
+  }
+  outchar 13; outchar 10;
+}

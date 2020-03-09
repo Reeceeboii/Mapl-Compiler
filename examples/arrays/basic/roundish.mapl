@@ -1,0 +1,70 @@
+// inputs: 0
+// output:
+//          *          
+//      *********      
+//    *************    
+//   ***************   
+//  *****************  
+//  *****************  
+// ******************* 
+// ******************* 
+// ******************* 
+// ******************* 
+//*********************
+// ******************* 
+// ******************* 
+// ******************* 
+// ******************* 
+//  *****************  
+//  *****************  
+//   ***************   
+//    *************    
+//      *********      
+//          *
+
+proc main() {
+  local int SIZE; SIZE = 21;
+  local int HALF_SIZE; HALF_SIZE = SIZE div 2;
+  local int SQRADIUS; SQRADIUS = HALF_SIZE * HALF_SIZE;
+  local int[][] a;
+  a = new int[][SIZE];
+  {
+    local int y; y = 0;
+    while (y < (a.length)) do {
+      {
+        a[y] = new int[SIZE];
+        {
+          local int x; x = 0;
+          while (x < ((a[0]).length)) do {
+            {
+              local int p; p = x - HALF_SIZE;
+              local int q; q = y - HALF_SIZE;
+              if (((p * p) + (q * q)) < (SQRADIUS + 1)) then
+                (a[y])[x] = 42;
+              else {}
+            }
+            x = x + 1;
+          }
+        }
+      }
+      y = y + 1;
+    }
+  }
+  {
+    local int y; y = 0;
+    while (y < (a.length)) do {
+      {
+        local int x; x = 0;
+        while (x < ((a[0]).length)) do {
+          if (0 < ((a[y])[x])) then
+            outchar (a[y])[x];
+          else
+            outchar 32;
+          x = x + 1;
+        }
+      }
+      outchar 13; outchar 10;
+      y = y + 1;
+    }
+  }
+}

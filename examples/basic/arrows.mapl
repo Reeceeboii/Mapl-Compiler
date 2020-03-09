@@ -1,0 +1,11 @@
+// inputs: 0
+// output: ↬↭↮↯
+
+proc main() {
+  outchar 8620;
+  outchar 8621;
+  outchar 8622;
+  outchar 8623;
+  outchar 13;
+  outchar 10;
+}

@@ -1,0 +1,14 @@
+// inputs: 0
+// output: 0
+
+proc main() {
+  local int[] a; a = new int[100];
+  local int i; i = 0;
+  local int sum; sum = 0;
+  while (i < (a.length)) do {
+    sum = sum + (a[i]);
+    i = i + 1;
+  }
+  output sum;
+  outchar 13; outchar 10;
+}

@@ -1,0 +1,6 @@
+// inputs: 0
+// output: 99 [without a terminating newline]
+
+proc main() {
+   output 99;
+}

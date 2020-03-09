@@ -1,0 +1,8 @@
+// inputs: 0
+// output: 0
+
+proc main() {
+  output new boolean[0].length;
+  outchar 13;
+  outchar 10;
+}

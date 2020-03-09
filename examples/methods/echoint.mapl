@@ -1,0 +1,7 @@
+// inputs: 1
+// output: copy of input
+
+proc main(int x) {
+   output x;
+   outchar 13; outchar 10;
+}

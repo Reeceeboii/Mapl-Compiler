@@ -1,0 +1,6 @@
+// inputs: 0
+// output: runtime error (null pointer)
+
+proc main() {
+  output (new boolean[][99][0]).length;
+}

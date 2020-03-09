@@ -1,0 +1,12 @@
+// inputs: 0
+// output: Hello
+
+proc main() {
+  outchar 72;
+  outchar 101;
+  outchar 108;
+  outchar 108;
+  outchar 111;
+  outchar 13;
+  outchar 10;
+}

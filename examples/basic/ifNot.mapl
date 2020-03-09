@@ -1,0 +1,9 @@
+// inputs: 0
+// output: -1
+
+proc main() {
+  local int x; x = 0-9;
+  local boolean nonNegative; nonNegative = (0 < x);
+  if (!nonNegative) then output 0-1; else output 1;
+  outchar 13; outchar 10;
+}

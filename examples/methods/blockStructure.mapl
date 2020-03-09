@@ -1,0 +1,34 @@
+// inputs: 0
+// output: 0
+
+proc main() {
+  output foo();
+  outchar 13;
+  outchar 10;
+}
+
+fun int foo() {
+  local int z;
+  z = 99;
+  local int i;
+  i = 7;
+  {
+    local int i;
+    i = 2 * z;
+    z = 2 * i;
+  }
+  z = z - i;
+  {
+    local int j;
+    j = z;
+    {
+      local int z;
+      z = j;
+      j = z - 1;
+    }
+    local int i;
+    i = 2 * j;
+    z = i;
+  }
+  return 769 - (z - i);
+}
