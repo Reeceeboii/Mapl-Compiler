@@ -5,6 +5,7 @@ import mapl.ast.util.VisitorAdapter;
 import ir.ast.*;
 import static mapl.compiler.FreshNameGenerator.makeName;
 
+import java.time.temporal.Temporal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -162,6 +163,12 @@ public class Compiler {
         public List<IRStm> visit(StmVarDecl n) {
             return new ArrayList<>();
         }
+
+        public List<IRStm> visit(StmAssign s){
+            List<IRStm> stms = new ArrayList<>();
+            stms.add(MOVE(TEMP(s.v.id), s.e.accept(expCompiler)));
+            return stms;
+        }
         
     }
     
@@ -173,6 +180,24 @@ public class Compiler {
         public IRExp visit(ExpInteger e) {
             return CONST(e.i);
         }
-        
+
+        // boolean true
+        @Override
+        public IRExp visit(ExpTrue e) {
+            return CONST(1);
+        }
+
+        // boolean false
+        @Override
+        public IRExp visit(ExpFalse e){
+            return CONST(0);
+        }
+
+        // variables
+        @Override
+        public IRExp visit(ExpVar e){
+            return TEMP(e.v.id);
+        }
+
     }
 }
