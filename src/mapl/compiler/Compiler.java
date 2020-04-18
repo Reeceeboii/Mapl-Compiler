@@ -164,12 +164,19 @@ public class Compiler {
             return new ArrayList<>();
         }
 
+        @Override
         public List<IRStm> visit(StmAssign s){
             List<IRStm> stms = new ArrayList<>();
             stms.add(MOVE(TEMP(s.v.id), s.e.accept(expCompiler)));
             return stms;
         }
-        
+
+        @Override
+        public List<IRStm> visit(StmIf n) {
+            List<IRStm> stms = new ArrayList<>();
+
+            return super.visit(n);
+        }
     }
     
     // TODO: add visit methods for all the Exp classes
@@ -199,7 +206,29 @@ public class Compiler {
             return TEMP(e.v.id);
         }
 
+        // not
+        @Override
+        public IRExp visit(ExpNot n) {
+            IRExp e = n.e.accept(expCompiler);
+            return null;
+        }
 
+        // op
+        @Override
+        public IRExp visit(ExpOp n) {
+            return BINOP(n.e1.accept(expCompiler), mOpToIRop(n.op), n.e2.accept(expCompiler));
+        }
+    }
 
+    private IROp mOpToIRop(ExpOp.Op op){
+        switch(op){
+            case PLUS: return IROp.ADD;
+            case MINUS: return IROp.SUB;
+            case AND: case TIMES: return IROp.MUL;
+            case LESSTHAN: return IROp.LT;
+            case EQUALS: return IROp.EQ;
+            case DIV: return IROp.DIV;
+            default: return null;
+        }
     }
 }
