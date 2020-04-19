@@ -5,7 +5,6 @@ import mapl.ast.util.VisitorAdapter;
 import ir.ast.*;
 import static mapl.compiler.FreshNameGenerator.makeName;
 
-import java.time.temporal.Temporal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -175,19 +174,19 @@ public class Compiler {
         public List<IRStm> visit(StmIf n) {
             List<IRStm> stms = new ArrayList<>();
             // make end, true and false labels
-            final String END_LABEL = "end";
-            String tl = makeName("t");
-            String fl = makeName("f");
+            String end = makeName();
+            String tl = makeName();
+            String fl = makeName();
             // add this funky stuff to stms
             stms.add(CJUMP(n.e.accept(expCompiler), IROp.EQ, CONST(1), tl, fl));
             // true label
-            stms.add(LABEL("LABEL " + tl));
+            stms.add(LABEL(tl));
             stms.addAll(n.st.accept(stmCompiler));
-            stms.add(JUMP(NAME(END_LABEL)));
+            stms.add(JUMP(NAME(end)));
             // false label
-            stms.add(LABEL("LABEL " + fl));
+            stms.add(LABEL(fl));
             stms.addAll(n.sf.accept(stmCompiler));
-            stms.add(LABEL("LABEL " + END_LABEL));
+            stms.add(LABEL(end));
             return stms;
         }
     }
