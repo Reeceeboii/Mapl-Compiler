@@ -187,6 +187,27 @@ public class Compiler {
         }
 
         @Override
+        public List<IRStm> visit(StmWhile n) {
+            List<IRStm> stms = new ArrayList<>();
+            // def the labels
+            String loopCond = makeName();
+            String startLab = makeName();
+            String endLab = makeName();
+
+            // condition of the loop
+            stms.add(LABEL(loopCond));
+            stms.add(CJUMP(n.e.accept(expCompiler), IROp.EQ, CONST(1), startLab, endLab));
+
+            // loop contents
+            stms.add(LABEL(startLab));
+            stms.addAll(n.body.accept(stmCompiler));
+            stms.add(JUMP(NAME(loopCond)));
+            stms.add(LABEL(endLab));
+
+            return stms;
+        }
+
+        @Override
         public List<IRStm> visit(StmIf n) {
             List<IRStm> stms = new ArrayList<>();
             // make end, true and false labels
@@ -226,6 +247,12 @@ public class Compiler {
         @Override
         public IRExp visit(ExpFalse e){
             return CONST(0);
+        }
+
+        // not
+        @Override
+        public IRExp visit(ExpNot e){
+
         }
 
         // variables
