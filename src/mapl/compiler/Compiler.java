@@ -166,12 +166,14 @@ public class Compiler {
             stms.add(EXP(CALL(NAME("_printint"), s.e.accept(expCompiler))));
             return stms;
         }
-        
+
+        // variable declaration
         @Override
         public List<IRStm> visit(StmVarDecl n) {
             return new ArrayList<>();
         }
 
+        // assignment
         @Override
         public List<IRStm> visit(StmAssign s){
             List<IRStm> stms = new ArrayList<>();
@@ -179,6 +181,7 @@ public class Compiler {
             return stms;
         }
 
+        // block
         @Override
         public List<IRStm> visit(StmBlock n) {
             List<IRStm> stms = new ArrayList<>();
@@ -186,6 +189,7 @@ public class Compiler {
             return stms;
         }
 
+        // while loop
         @Override
         public List<IRStm> visit(StmWhile n) {
             List<IRStm> stms = new ArrayList<>();
@@ -207,6 +211,18 @@ public class Compiler {
             return stms;
         }
 
+        // procedure declaration
+        @Override
+        public List<IRStm> visit(ProcDecl n) {
+            List<IRStm> stms = new ArrayList<>();
+            stms.add(LABEL(n.id));
+            stms.add(PROLOGUE(n.fs.size(), n.stackAllocation));
+            for(Stm s : n.ss) stms.addAll(s.accept(stmCompiler));
+            stms.add(EPILOGUE(n.fs.size(), n.stackAllocation));
+            return stms;
+        }
+
+        // if statement
         @Override
         public List<IRStm> visit(StmIf n) {
             List<IRStm> stms = new ArrayList<>();
@@ -252,7 +268,7 @@ public class Compiler {
         // not
         @Override
         public IRExp visit(ExpNot e){
-
+            return null;
         }
 
         // variables
