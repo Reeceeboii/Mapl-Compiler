@@ -174,8 +174,21 @@ public class Compiler {
         @Override
         public List<IRStm> visit(StmIf n) {
             List<IRStm> stms = new ArrayList<>();
-
-            return super.visit(n);
+            // make end, true and false labels
+            final String END_LABEL = "end";
+            String tl = makeName("t");
+            String fl = makeName("f");
+            // add this funky stuff to stms
+            stms.add(CJUMP(n.e.accept(expCompiler), IROp.EQ, CONST(1), tl, fl));
+            // true label
+            stms.add(LABEL("LABEL " + tl));
+            stms.addAll(n.st.accept(stmCompiler));
+            stms.add(JUMP(NAME(END_LABEL)));
+            // false label
+            stms.add(LABEL("LABEL " + fl));
+            stms.addAll(n.sf.accept(stmCompiler));
+            stms.add(LABEL("LABEL " + END_LABEL));
+            return stms;
         }
     }
     
