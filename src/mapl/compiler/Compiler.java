@@ -150,11 +150,20 @@ public class Compiler {
     // TODO: add visit methods for method declarations
     // Note: no need to define visit methods for any other AST types
     private class StmCompiler extends VisitorAdapter<List<IRStm>> {
-        
+
+        // outchar
         @Override
         public List<IRStm> visit(StmOutchar s) {
             List<IRStm> stms = new ArrayList<>();
             stms.add(EXP(CALL(NAME("_printchar"), s.e.accept(expCompiler))));
+            return stms;
+        }
+
+        // output
+        @Override
+        public List<IRStm> visit(StmOutput s){
+            List<IRStm> stms = new ArrayList<>();
+            stms.add(EXP(CALL(NAME("_printint"), s.e.accept(expCompiler))));
             return stms;
         }
         
@@ -167,6 +176,13 @@ public class Compiler {
         public List<IRStm> visit(StmAssign s){
             List<IRStm> stms = new ArrayList<>();
             stms.add(MOVE(TEMP(s.v.id), s.e.accept(expCompiler)));
+            return stms;
+        }
+
+        @Override
+        public List<IRStm> visit(StmBlock n) {
+            List<IRStm> stms = new ArrayList<>();
+            for(Stm stm : n.ss) stms.addAll(stm.accept(stmCompiler));
             return stms;
         }
 
@@ -216,13 +232,6 @@ public class Compiler {
         @Override
         public IRExp visit(ExpVar e){
             return TEMP(e.v.id);
-        }
-
-        // not
-        @Override
-        public IRExp visit(ExpNot n) {
-            IRExp e = n.e.accept(expCompiler);
-            return null;
         }
 
         // op
