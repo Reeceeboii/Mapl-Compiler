@@ -213,12 +213,24 @@ public class Compiler {
 
         // procedure declaration
         @Override
-        public List<IRStm> visit(ProcDecl n) {
+        public List<IRStm> visit(ProcDecl n){
             List<IRStm> stms = new ArrayList<>();
             stms.add(LABEL(n.id));
             stms.add(PROLOGUE(n.fs.size(), n.stackAllocation));
             for(Stm s : n.ss) stms.addAll(s.accept(stmCompiler));
             stms.add(EPILOGUE(n.fs.size(), n.stackAllocation));
+            return stms;
+        }
+
+        // function declaration
+        @Override
+        public List<IRStm> visit(FunDecl f){
+            List<IRStm> stms = new ArrayList<>();
+            stms.add(LABEL(f.id));
+            stms.add(PROLOGUE(f.fs.size(), f.stackAllocation));
+            for(Stm s : f.ss) stms.addAll(s.accept(stmCompiler));
+            MOVE(TEMP("T"), f.e.accept(expCompiler));
+            stms.add(EPILOGUE(f.fs.size(), f.stackAllocation));
             return stms;
         }
 
@@ -268,7 +280,7 @@ public class Compiler {
         // not
         @Override
         public IRExp visit(ExpNot e){
-            return null;
+            return BINOP(CONST(1), IROp.SUB, e.e.accept(expCompiler));
         }
 
         // variables
