@@ -289,6 +289,14 @@ public class Compiler {
             return TEMP(e.v.id);
         }
 
+        // call
+        @Override
+        public IRExp visit(ExpCall c){
+            List<IRExp> arguments = new ArrayList<>();
+            c.es.forEach(exp -> arguments.add(exp.accept(expCompiler)));
+            return CALL(NAME(c.id), arguments);
+        }
+
         // op
         @Override
         public IRExp visit(ExpOp n) {
